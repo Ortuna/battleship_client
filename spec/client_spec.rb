@@ -34,5 +34,5 @@ describe BattleshipClient::Client do
     response = @client.fire "e9"
     response.should_not be_nil
     response["hit"].should_not be_nil
-  end  
+  end
 end
