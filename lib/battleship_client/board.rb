@@ -13,7 +13,8 @@ module BattleshipClient
       end
 
       #placing ships 2..5 range
-      (2..5).to_a.each do |i|
+
+      [2,3,3,4,5].to_a.each do |i|
         loop do
           orientation = Random.rand(2) # 0 = - , 1 = |
           x = Random.rand(10)
