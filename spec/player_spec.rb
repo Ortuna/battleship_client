@@ -17,10 +17,21 @@ describe BattleshipClient::Player do
     @player.status("B9").should == "m"
   end
 
+  it "Should calculate the next move" do
+    @player.hit "B5"
+    move = @player.next_move
+    move.should_not be_nil
+  end
+
   it "debug" do
-    puts ""
-    board = @player.board
+    puts ""    
     @player.miss "B9"
+    @player.hit  "A9"
+    @player.hit  "F5"
+    @player.hit  "G5"
+    @player.hit  "J1"
+    @player.next_move
+    board = @player.probability_board
     board.each do |row|
       buffer = ""
       row.each do |point|

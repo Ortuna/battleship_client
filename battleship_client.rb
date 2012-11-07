@@ -5,5 +5,11 @@ config = YAML::load(File.open('config/battleship.yml'))
 
 client = BattleshipClient::Client.new(config["server"], config["port"])
 
+  @config = {
+      :server => 'localhost', 
+      :port => 3000,
+    }
+  player1 = BattleshipClient::Client.new(@config[:server], @config[:port], "player1")
+  player2 = BattleshipClient::Client.new(@config[:server], @config[:port], "player2")
 
 p client.server

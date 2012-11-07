@@ -39,9 +39,7 @@ module BattleshipClient
           end
 
           #Try to find a new spot because of collision
-          if find_new_spot
-            redo
-          end
+          redo if find_new_spot
 
           #Plot in the array
           (1..i).to_a.each do |j|
