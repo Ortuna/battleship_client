@@ -23,4 +23,16 @@ describe BattleshipClient::Client do
     @client.game_id.should_not be_nil
     @client.status.should == "playing"
   end
+
+  it "Should return true of false for my_turn?" do
+    @client.join_game
+    @client.my_turn?.should_not be_nil    
+  end
+
+  it "Should be able to fire a shot" do
+    @client.join_game
+    response = @client.fire "e9"
+    response.should_not be_nil
+    response["hit"].should_not be_nil
+  end  
 end

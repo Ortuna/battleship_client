@@ -10,8 +10,7 @@ module BattleshipClient
     def join_game
       params = {user: @user, board: generate_board}      
       response = post "games/join", params
-      return false if response.code != 200
-      body = JSON.parse(response.body)
+      body = json_parse(response)
       @game_id = body["game_id"]
     end
 
@@ -23,12 +22,21 @@ module BattleshipClient
       game_status["my_turn"]
     end
 
-    private
-    
+    def fire(coords)
+      params = {user: @user, game_id: @game_id, shot: coords}
+      response = post "games/fire", params
+      json_parse(response)
+    end
+
+    private    
     def game_status      
       params   = {game_id: @game_id, user: @user}
       response = get "games/status", params
-      return false if response.code != 200
+      json_parse(response)
+    end
+
+    def json_parse(response)
+      return nil if response.code != 200
       JSON.parse(response.body)
     end
 
