@@ -6,8 +6,9 @@ describe BattleshipClient::Client do
     @config = {
         :server => 'localhost', 
         :port => 3000,
-        :user => 'Sumeet'
+        :user => 'Sumeetz'
       }
+    @client = BattleshipClient::Client.new(@config[:server], @config[:port], @config[:user])
   end
 
   it "Should take server, port, user as a config option" do    
@@ -17,7 +18,9 @@ describe BattleshipClient::Client do
     client.user.should == @config[:user]
   end
 
-  it "Should start a new game" do
-
+  it "Should start a new game with the status of playing" do
+    @client.join_game
+    @client.game_id.should_not be_nil
+    @client.status.should == "playing"
   end
 end
