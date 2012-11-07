@@ -12,7 +12,8 @@ module BattleshipClient
         board << row
       end
 
-      #placing ships 2..5 range
+      #placing ships 2..5 range.
+      #Woops didn't see the 3 size ship twice
 
       [2,3,3,4,5].to_a.each do |i|
         loop do

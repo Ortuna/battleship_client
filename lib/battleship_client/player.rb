@@ -3,6 +3,7 @@ module BattleshipClient
     attr_accessor :probability_board
 
     def initialize
+      #empty board to keep track of things
       board = []
       (1..10).to_a.each do 
         row = []
@@ -55,9 +56,9 @@ module BattleshipClient
           end
         end
       end
-      p target
       target
     end
+    
     def calculate_probability
       #find hits
       (0..10).to_a.each do |y|

@@ -1,57 +1,41 @@
 $:.push File.expand_path(File.dirname(__FILE__)) #Ruby 1.9 took out current path from load path
+require 'lib/battleship_client'
+config = YAML::load(File.open('config/battleship.yml'))
 
-
-
-def debug(board)
-  board.each do |row|
-    buffer = ""
-    row.each do |point|
-      buffer += "#{point}"
-    end
-    puts buffer
-  end
-end
-
-def turn(player, client)
-  move = player.next_move  
+def turn_logic(player, client)
+  move = player.next_move
   response = client.fire(move)
   return if response.nil?
+  p "#{client.user} - #{move} - #{response['hit']? 'hit': 'miss'}"
   if response["hit"] == true
     player.hit(move)
   else
     player.miss(move)
   end
-  # p "#{client.user} #{move} - #{response['hit']}"
 end
 
-require 'lib/battleship_client'
-config = YAML::load(File.open('config/battleship.yml'))
+games = []
+2.times do    
+  game = {
+          :client => BattleshipClient::Client.new(config["server"], config["port"], "player#{Random.rand(999)}"),
+          :player => BattleshipClient::Player.new
+        }
+  game[:client].join_game
+  games << game
+end
 
-  @config = {
-      :server => 'localhost', 
-      :port => 3000,
-    }
-  client1 = BattleshipClient::Client.new(@config[:server], @config[:port], "player1")
-  client2 = BattleshipClient::Client.new(@config[:server], @config[:port], "player2")
+while(games[0][:client].status == "playing" && games[1][:client].status == "playing") do
+  games.each do |game|
+    turn_logic(game[:player], game[:client]) if game[:client].my_turn?
+  end
+  sleep(0.3)
+end
 
-  client1.join_game
-  client2.join_game
+games.each do |game|
+  puts "#{game[:client].user} #{game[:client].status}"
+end
 
-  player1 = BattleshipClient::Player.new
-  player2 = BattleshipClient::Player.new
 
-    while(client1.status == "playing" && client2.status == "playing") do
-      if(client1.my_turn? == true)
-        turn(player1, client1)
-      else
-        turn(player2, client2)
-        # debug(player2.probability_board)
-      end
-      # sleep(0.3)
-    end
-    print "player #{client1.user} won" if client1.status == "won"
-    print "player #{client2.user} won" if client2.status == "won"
-  # p player2
 
 
 
